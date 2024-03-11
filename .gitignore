@@ -28,6 +28,7 @@ hs_err_pid*
 replay_pid*
 
 ### react ###
+.idea
 .DS_*
 logs
 **/*.backup.*
