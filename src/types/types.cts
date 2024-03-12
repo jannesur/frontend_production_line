@@ -25,7 +25,7 @@ export enum VehicleModel {
     ID7
 }
 
-interface ProductionStep {
+export interface ProductionStep {
     uuid: string;
     name: string;
     durationInMinutes: number;

@@ -30,3 +30,13 @@ export const useEntityStore = create<SelectedEntity>((set) => ({
     entity: Employee | ProductionLine | ProductionStep | Station | Robot,
   ) => set({ entity }),
 }));
+
+interface SelectedType {
+  type: string;
+  setType: (type: string) => void;
+}
+
+export const useTypeStore = create<SelectedType>((set) => ({
+  type: "employee",
+  setType: (type: string) => set({ type }),
+}));
