@@ -4,11 +4,18 @@ import { PlusCircle } from "lucide-react";
 import { Card } from "@/components/ui/card.tsx";
 import { ModeToggle } from "@/components/mode-toggle.tsx";
 import { ThemeProvider } from "@/components/theme-provider.tsx";
-import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { useSearchStore } from "@/store.ts";
 
 export const Route = createRootRoute({
-  component: () => (
+  component: Index,
+});
+
+function Index() {
+  const state = useSearchStore();
+
+  return (
     <>
       <ThemeProvider>
         <div className="p-2 px-16 flex justify-between bg-primary text-white">
@@ -19,7 +26,13 @@ export const Route = createRootRoute({
               className="h-8 w-8 mr-2 inline"
             />
           </Link>
-          <Input placeholder={"Start typing..."} autoFocus className={"w-64"} />
+          <Input
+            placeholder={"Start typing..."}
+            autoFocus
+            className={"w-64 text-black"}
+            onChange={(e) => state.setQuery(e.target.value)}
+            value={state.query}
+          />
           <div className={"align-center"}>
             <Button size={"icon"} variant={"ghost"}>
               <Link to="/create">
@@ -38,5 +51,5 @@ export const Route = createRootRoute({
         <TanStackRouterDevtools />
       </ThemeProvider>
     </>
-  ),
-});
+  );
+}

@@ -6,8 +6,8 @@ export const Route = createLazyFileRoute("/create")({
 
 function Create() {
   return (
-    <div className="p-2">
-      <h3>Create</h3>
+    <div className="flex justify-center">
+      <h3>Create new </h3>
     </div>
   );
 }

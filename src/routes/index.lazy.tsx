@@ -12,17 +12,37 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { columns } from "@/data/productionline_table_def.ts";
+import { useEffect, useState } from "react";
+import { useSearchStore } from "@/store.ts";
+import { ProductionDrawer } from "@/components/drawer.tsx";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
 });
 
 function Index() {
+  const query = useSearchStore((state) => state.query);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    function filterData() {
+      return data.filter((row) => {
+        return Object.values(row).some((value) => {
+          return String(value).toLowerCase().includes(query.toLowerCase());
+        });
+      });
+    }
+
+    console.log("filtering data");
+    setData(filterData());
+  }, [query]);
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
   return (
     <div className="p-2">
       <Table>
@@ -67,6 +87,7 @@ function Index() {
           )}
         </TableBody>
       </Table>
+      <ProductionDrawer />
     </div>
   );
 }

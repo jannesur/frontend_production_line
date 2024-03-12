@@ -1,22 +1,31 @@
 export type ProductionLine = {
     uuid: string;
     name: string;
-    stations: Station[];
+    status: Status;
     simulationStatus: SimulationStatus;
     vehicleModel: VehicleModel;
-    robots: Robot[];
     productionSteps: ProductionStep[];
 }
 
 export enum SimulationStatus {
+    RUNNING,
+    STOPPED
+}
 
+export enum Status {
+    READY,
+    INCOMPLETE
 }
 
 export enum VehicleModel {
-
+    GOLF,
+    POLO,
+    ID3,
+    ID4,
+    ID7
 }
 
-export type ProductionStep = {
+interface ProductionStep {
     uuid: string;
     name: string;
     durationInMinutes: number;
@@ -26,15 +35,17 @@ export type ProductionStep = {
 }
 
 export type Station = {
+    name: string;
     employees: Employee[];
-}
+} & ProductionStep;
 
 export type Employee = {
     uuid: string;
     name: string;
+    station: Station;
 }
 
 export type Robot = {
     maintenanceCycle: number;
     maintenanceTime: number;
-}
+} & ProductionStep;
