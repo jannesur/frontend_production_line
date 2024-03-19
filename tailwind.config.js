@@ -1,11 +1,12 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -16,24 +17,11 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    fontFamily: {
+      sans: ["Spicy rice", "sans-serif"],
+      mono: ["Roboto Mono", "monospace"],
+    },
     extend: {
-      fontSize: {
-        sm: '0.750rem',
-        base: '1rem',
-        xl: '1.333rem',
-        '2xl': '1.777rem',
-        '3xl': '2.369rem',
-        '4xl': '3.158rem',
-        '5xl': '4.210rem',
-      },
-      fontFamily: {
-        heading: 'Tinos',
-        body: 'Tinos',
-      },
-      fontWeight: {
-        normal: '400',
-        bold: '700',
-      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -91,4 +79,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

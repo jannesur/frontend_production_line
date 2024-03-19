@@ -13,7 +13,7 @@ export function SelectType() {
   return (
     <div className="flex justify-center align-center pt-10 border-b bg-accent">
       <h1 className={"text-2xl pr-2"}>Create new </h1>
-      <Select onValueChange={(value) => setType(value)}>
+      <Select onValueChange={(value) => setType(value)} defaultValue={"line"}>
         <SelectTrigger className="w-[250px] text-2xl">
           <SelectValue placeholder="Type" />
         </SelectTrigger>
