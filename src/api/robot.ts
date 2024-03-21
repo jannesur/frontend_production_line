@@ -13,6 +13,12 @@ export async function getRobotById(id: string) {
     .then((res) => res.data);
 }
 
+export async function getRobotWithoutProductionLine() {
+  return await axios
+    .get("http://localhost:8080/robots/without-productionLine")
+    .then((res) => res.data);
+}
+
 export async function createRobot(robot: Robot) {
   return await axios
     .post("http://localhost:8080/robots", robot)

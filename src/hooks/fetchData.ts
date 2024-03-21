@@ -1,6 +1,3 @@
-import { getAllEmployees } from "@/api/employee.ts";
-import { getAllRobots } from "@/api/robot.ts";
-import { getAllStations } from "@/api/station.ts";
 import { getAllProductionLines } from "@/api/productionline.ts";
 import {
   useEmployeeStore,
@@ -8,43 +5,85 @@ import {
   useRobotsStore,
   useStationsStore,
 } from "@/store.ts";
-import { useMemo } from "react";
+import { useEffect } from "react";
+import {
+  Employee,
+  Robot,
+  SimulationStatus,
+  Station,
+  Status,
+  VehicleModel,
+} from "@/types/types.ts";
+import { toast } from "sonner";
+import { getAllEmployeesWithoutStation } from "@/api/employee.ts";
+import { getRobotWithoutProductionLine } from "@/api/robot.ts";
+import { getAllStationsWithoutProductionLine } from "@/api/station.ts";
 
 export function FetchData() {
-  const employees = useEmployeeStore();
-  const robots = useRobotsStore();
-  const stations = useStationsStore();
+  const employeeState = useEmployeeStore();
+  const robotState = useRobotsStore();
+  const stationState = useStationsStore();
   const productionLines = useProductionLinesStore();
 
-  useMemo(() => {
-    getAllEmployees()
+  useEffect(() => {
+    const employees = [] as Employee[];
+    const robots = [] as Robot[];
+    const stations = [] as Station[];
+    getAllEmployeesWithoutStation()
       .then((employee) => {
-        employees.setEmployees(employee);
+        employees.push(...employee);
       })
       .catch((error) => {
-        console.log("Error fetching available employees." + error);
+        toast("Error fetching available employees." + error);
       });
-    getAllRobots()
+    getRobotWithoutProductionLine()
       .then((robot) => {
-        robots.setRobots(robot);
+        robots.push(...robot);
       })
       .catch((error) => {
-        console.log("Error fetching available robots." + error);
+        toast("Error fetching available robots." + error);
       });
-    getAllStations()
-      .then((station) => {
-        stations.setStations(station);
-      })
-      .catch((error) => {
-        console.log("Error fetching available stations." + error);
-      });
+    getAllStationsWithoutProductionLine().then((station) => {
+      stations.push(...station);
+    });
     getAllProductionLines()
-      // @ts-ignore
       .then((productionLine) => {
         productionLines.setProductionLines(productionLine);
+        productionLine.forEach((productionLine) => {
+          productionLine.productionSteps.forEach((productionStep) => {
+            if ("employees" in productionStep) {
+              let station = productionStep as Station;
+              station = {
+                ...station,
+                productionLine: {
+                  name: productionLine.name,
+                  producedCars: productionLine.producedCars,
+                  productionSteps: [],
+                  simulationStatus: SimulationStatus.STOPPED,
+                  status: Status.INCOMPLETE,
+                  uuid: productionLine.uuid,
+                  vehicleModel: VehicleModel.GOLF,
+                },
+              };
+              stations.push(station);
+              station.employees.forEach((e) => {
+                station = { ...station, employees: [] };
+                e = { ...e, station: station };
+                employees.push(e);
+              });
+            } else if ("maintenanceCycleInMinutes" in productionStep) {
+              const robot = productionStep as Robot;
+              robot.productionLine = productionLine;
+              robots.push(robot);
+            }
+          });
+        });
+        employeeState.setEmployees(employees);
+        robotState.setRobots(robots);
+        stationState.setStations(stations);
       })
       .catch((error) => {
-        console.log("Error fetching available production lines." + error);
+        toast("Error fetching available production lines." + error);
       });
   }, []);
 }

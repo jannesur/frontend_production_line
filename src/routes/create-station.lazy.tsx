@@ -1,8 +1,9 @@
-import { Badge } from "@/components/ui/badge.tsx";
-import { Input } from "@/components/ui/input.tsx";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useCurrentStationStore, useEmployeeStore } from "@/store.ts";
-import { Button } from "@/components/ui/button.tsx";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createStation } from "@/api/station.ts";
 import {
   Form,
   FormControl,
@@ -11,17 +12,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form.tsx";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from "@/components/ui/form";
+import { Badge } from "@/components/ui/badge.tsx";
+import { Input } from "@/components/ui/input.tsx";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
-import { createStation } from "@/api/station.ts";
+import { Button } from "@/components/ui/button.tsx";
 
 // @ts-ignore
 export const Route = createLazyFileRoute("/create-station")({
@@ -29,7 +29,9 @@ export const Route = createLazyFileRoute("/create-station")({
 });
 
 function CreateStation() {
-  const currentStation = useCurrentStationStore();
+  const employees = useEmployeeStore((state) => state.employees);
+  const [station] = useCurrentStationStore((state) => [state.currentStation]);
+
   const formSchema = z.object({
     station: z.object({
       name: z.string().min(2).max(50),
@@ -45,30 +47,16 @@ function CreateStation() {
       timeToRecovery: z.number().min(1).max(1000),
     }),
   });
-  const employees = useEmployeeStore((state) => state.employees);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       station: {
-        name: currentStation.currentStation.name
-          ? currentStation.currentStation.name
-          : "",
-        uuid: currentStation.currentStation.uuid
-          ? currentStation.currentStation.uuid
-          : "",
-        employees: currentStation.currentStation.employees
-          ? currentStation.currentStation.employees
-          : [],
-        durationInMinutes: currentStation.currentStation.durationInMinutes
-          ? currentStation.currentStation.durationInMinutes
-          : 0,
-        failureProbability: currentStation.currentStation.failureProbability
-          ? currentStation.currentStation.failureProbability
-          : 0,
-        timeToRecovery: currentStation.currentStation.timeToRecovery
-          ? currentStation.currentStation.timeToRecovery
-          : 0,
+        name: station?.name,
+        uuid: station?.uuid,
+        employees: station.employees,
+        durationInMinutes: station?.durationInMinutes,
+        failureProbability: station?.failureProbability,
+        timeToRecovery: station?.timeToRecovery,
       },
     },
   });

@@ -7,6 +7,12 @@ export async function getAllStations() {
     .then((res) => res.data as Station[]);
 }
 
+export async function getAllStationsWithoutProductionLine() {
+  return await axios
+    .get("http://localhost:8080/stations/without-production-line")
+    .then((res) => res.data as Station[]);
+}
+
 export async function getStationById(id: string) {
   return await axios
     .get(`http://localhost:8080/stations/${id}`)

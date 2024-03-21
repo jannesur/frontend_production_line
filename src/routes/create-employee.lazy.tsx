@@ -31,6 +31,7 @@ export const Route = createLazyFileRoute("/create-employee")({
 
 function CreateEmployee() {
   const currentEmployee = useCurrentEmployeeStore();
+  const stations = useStationsStore((state) => state.stations);
   const formSchema = z.object({
     employee: z.object({
       name: z.string().min(2).max(50),
@@ -70,7 +71,6 @@ function CreateEmployee() {
     });
   }
 
-  const stations = useStationsStore((state) => state.stations);
   return (
     <Form {...form}>
       <form
@@ -100,45 +100,39 @@ function CreateEmployee() {
             </FormItem>
           )}
         />
-        {stations.length > 0 ? (
-          <FormField
-            control={form.control}
-            name="employee.station.uuid"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  <Badge className={"text-white"}>Station</Badge>
-                </FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange} {...field}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={"Select a station"}
-                        ></SelectValue>
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {stations.map((station) => (
-                        <SelectItem key={station.uuid} value={station.uuid}>
-                          {station.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormDescription>
-                  The station the employee is assigned to.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          ></FormField>
-        ) : (
-          <div className={"justify-center flex"}>
-            <Badge className={"text-white"}>No Stations available.</Badge>
-          </div>
-        )}
+        <FormField
+          control={form.control}
+          name="employee.station.uuid"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                <Badge className={"text-white"}>Station</Badge>
+              </FormLabel>
+              <FormControl>
+                <Select onValueChange={field.onChange} {...field}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue
+                        placeholder={"Select a station"}
+                      ></SelectValue>
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {stations.map((station) => (
+                      <SelectItem key={station.uuid} value={station.uuid}>
+                        {station.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormDescription>
+                The station the employee is assigned to.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button
           size={"lg"}
           className={"bg-primary text-white"}

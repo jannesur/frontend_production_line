@@ -86,16 +86,16 @@ export function ProductionLineTable() {
                   </>
                 )}
               </TableCell>
-              <TableCell>
-                <Link to={`/create-production-line`}>
-                  <Button
-                    variant={"outline"}
-                    onClick={() => {
-                      setCurrentProductionLine(productionLine);
-                    }}
-                  >
-                    Edit
-                  </Button>
+              <TableCell
+                onClick={() => {
+                  setCurrentProductionLine(productionLine);
+                }}
+              >
+                <Link
+                  to={`/create-production-line`}
+                  className={"border p-2 rounded"}
+                >
+                  Edit
                 </Link>
               </TableCell>
               <TableCell

@@ -42,12 +42,12 @@ export function StationTable(props: StationTableProps) {
       </TableHeader>
       <TableBody>
         {props.stations.map((station) => (
-          <TableRow>
+          <TableRow key={station.uuid}>
             <TableCell>{station.uuid}</TableCell>
             <TableCell>{station.name}</TableCell>
             <TableCell>
               {station.employees.map((employee) => (
-                <div>{employee.name}</div>
+                <div key={employee.uuid}>{employee.name}</div>
               ))}
             </TableCell>
             <TableCell>{station.productionLine?.name}</TableCell>

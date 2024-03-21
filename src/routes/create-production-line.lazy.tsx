@@ -172,7 +172,7 @@ function CreateProductionLine() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  {stations.map((station) => (
+                  {stations.map((station: Station) => (
                     <DropdownMenuCheckboxItem
                       key={station.uuid}
                       checked={checkIfStationIsInCurrentStations(station)}

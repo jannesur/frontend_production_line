@@ -19,11 +19,13 @@ export function ProductionDrawer() {
     {} as ProductionStep,
   );
   const moveSelectedStepLeft = () => {
+    // @ts-ignore
     const index = state.currentProductionLine.productionSteps.indexOf(selected);
     if (index === 0) return;
     const newSteps = state.currentProductionLine.productionSteps;
     if (newSteps && index) {
       const temp = newSteps[index - 1];
+      // @ts-ignore
       newSteps[index - 1] = selected;
       newSteps[index] = temp;
     }
@@ -34,12 +36,14 @@ export function ProductionDrawer() {
     });
   };
   const moveSelectedStepRight = () => {
+    // @ts-ignore
     const index = state.currentProductionLine.productionSteps.indexOf(selected);
     if (index === state.currentProductionLine.productionSteps.length - 1)
       return;
     const newSteps = state.currentProductionLine.productionSteps;
     if (newSteps) {
       const temp = newSteps[index + 1];
+      // @ts-ignore
       newSteps[index + 1] = selected;
       newSteps[index] = temp;
     }
