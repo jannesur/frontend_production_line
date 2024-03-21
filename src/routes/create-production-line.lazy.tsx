@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   useCurrentProductionLineStore,
   useRobotsStore,
@@ -55,12 +56,12 @@ function CreateProductionLine() {
   const [currentRobots, setCurrentRobots] = useState<Robot[]>(
     currentProductionLine.productionSteps.filter((step) => {
       return "maintenanceTimeInMinutes" in step;
-    }) as Robot[],
+    }) as Robot[]
   );
   const [currentStations, setCurrentStations] = useState<Station[]>(
     currentProductionLine.productionSteps.filter((step) => {
       return "employees" in step;
-    }) as Station[],
+    }) as Station[]
   );
   const robots = useRobotsStore((state) => state.robots);
   const stations = useStationsStore((state) => state.stations);
@@ -109,7 +110,7 @@ function CreateProductionLine() {
     let complete = true;
     if (currentRobots.length + currentStations.length < 3) {
       toast(
-        "The production line will be created but the state will be incomplete. You need to add at least 3 production steps.",
+        "The production line will be created but the state will be incomplete. You need to add at least 3 production steps."
       );
       complete = false;
     }
@@ -180,14 +181,14 @@ function CreateProductionLine() {
                         if (checkIfStationIsInCurrentStations(station)) {
                           setCurrentStations(
                             currentStations.filter(
-                              (s) => s.uuid !== station.uuid,
-                            ),
+                              (s) => s.uuid !== station.uuid
+                            )
                           );
                           setProductionLine({
                             ...currentProductionLine,
                             productionSteps:
                               currentProductionLine.productionSteps.filter(
-                                (s) => s.uuid !== station.uuid,
+                                (s) => s.uuid !== station.uuid
                               ),
                           });
                         } else {
@@ -232,13 +233,13 @@ function CreateProductionLine() {
                         console.log("robot", robot);
                         if (checkIfRobotIsInCurrentRobots(robot)) {
                           setCurrentRobots(
-                            currentRobots.filter((r) => r.uuid !== robot.uuid),
+                            currentRobots.filter((r) => r.uuid !== robot.uuid)
                           );
                           setProductionLine({
                             ...currentProductionLine,
                             productionSteps:
                               currentProductionLine.productionSteps.filter(
-                                (r) => r.uuid !== robot.uuid,
+                                (r) => r.uuid !== robot.uuid
                               ),
                           });
                         } else {

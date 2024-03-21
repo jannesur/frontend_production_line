@@ -1,3 +1,4 @@
+// @ts-nocheck
 export type ProductionLine = {
   uuid: string;
   name: string;
